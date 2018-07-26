@@ -15,6 +15,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 
+
 public class FileManager {
 	
 	private final String MESSAGE_ENCRYPT_EXTENSION = ".encript";

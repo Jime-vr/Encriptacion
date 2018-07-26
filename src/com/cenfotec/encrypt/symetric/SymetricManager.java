@@ -1,6 +1,5 @@
 package com.cenfotec.encrypt.symetric;
 
-
 import java.io.BufferedReader;
 
 import java.io.FileNotFoundException;
@@ -13,6 +12,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 import com.cenfotec.manager.FileManager;
+
 
 public class SymetricManager {
 

@@ -1,4 +1,4 @@
-package com.cenfotec.encriypt.asymetric;
+package com.cenfotec.encrypt.asymetric;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -31,6 +31,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import com.cenfotec.manager.FileManager;
+
 
 public class AsymetricManager {
 	
