@@ -11,5 +11,5 @@ public interface IManager {
 
 	public void createKey(String name) throws Exception, IOException, InvalidKeySpecException, NoSuchAlgorithmException;
 	public void encryptMessage(String messageName, String message, String keyName) throws IOException, IllegalBlockSizeException, BadPaddingException;
-	public void decryptMessage(String messageName, String keyName) throws Exception;
+	public String decryptMessage(String messageName, String keyName) throws Exception;
 }
