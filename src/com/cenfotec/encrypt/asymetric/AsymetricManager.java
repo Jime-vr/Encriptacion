@@ -4,7 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 
 import java.io.FileInputStream;
-
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,10 +30,11 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import com.cenfotec.encrypt.main.IManager;
 import com.cenfotec.manager.FileManager;
 
 
-public class AsymetricManager {
+public class AsymetricManager implements IManager {
 	
 	private final String KEY_EXTENSION = ".key";
 	private final String PUBLIC = "public";
@@ -41,7 +42,7 @@ public class AsymetricManager {
 	private final String PATH = "C:/encrypt/asymetric/";
 	private FileManager fileM = new FileManager();
 
-	public void createKey(String name) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
+	public void createKey(String name) throws Exception, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 		
 		KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
 		KeyFactory fact = KeyFactory.getInstance("RSA");
@@ -50,15 +51,11 @@ public class AsymetricManager {
 		
 		KeyPair kp = kpg.genKeyPair();
 		
-		RSAPublicKeySpec pub = fact.getKeySpec(kp.getPublic(),
-		  RSAPublicKeySpec.class);
-		RSAPrivateKeySpec priv = fact.getKeySpec(kp.getPrivate(),
-		  RSAPrivateKeySpec.class);
+		RSAPublicKeySpec pub = fact.getKeySpec(kp.getPublic(), RSAPublicKeySpec.class);
+		RSAPrivateKeySpec priv = fact.getKeySpec(kp.getPrivate(), RSAPrivateKeySpec.class);
 
-		saveToFile(PATH + name+"public.key", pub.getModulus(),
-		  pub.getPublicExponent());
-		saveToFile(PATH + name+"private.key", priv.getModulus(),
-		  priv.getPrivateExponent());
+		saveToFile(PATH + name+"public.key", pub.getModulus(), pub.getPublicExponent());
+		saveToFile(PATH + name+"private.key", priv.getModulus(), priv.getPrivateExponent());
 	}
 	
 	public void saveToFile(String fileName,BigInteger mod, BigInteger exp) throws IOException {
@@ -74,11 +71,24 @@ public class AsymetricManager {
 		}
 	}
 
-	public void encryptMessage(String messageName, String message, String keyName) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
+	public void encryptMessage(String messageName, String message, String keyName) throws IOException, IllegalBlockSizeException, BadPaddingException {
 		
 		PublicKey pubKey = (PublicKey)readKeyFromFile(keyName, PUBLIC);
-		Cipher cipher = Cipher.getInstance("RSA");
-		cipher.init(Cipher.ENCRYPT_MODE, pubKey);
+		
+		Cipher cipher = null;
+		
+		try {
+			cipher = Cipher.getInstance("RSA");
+			
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			cipher.init(Cipher.ENCRYPT_MODE, pubKey);
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		}
 
 	    fileM.cipher(PATH, messageName, cipher, message);
 		
@@ -92,7 +102,7 @@ public class AsymetricManager {
 		byte[] encryptedMessage = fileM.readMessageFile(PATH, messageName);
 		byte[] decryptedData = cipher.doFinal(encryptedMessage);
 	    String message = new String(decryptedData,StandardCharsets.UTF_8);
-	    System.out.println("El mensaje era: ");
+	    System.out.println("The message was: ");
 		System.out.println(message);
 	}
 	
@@ -119,5 +129,5 @@ public class AsymetricManager {
 		    oin.close();
 		  }
 		}
-	
+
 }

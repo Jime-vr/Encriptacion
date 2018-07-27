@@ -6,31 +6,51 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
-
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.cenfotec.encrypt.main.IManager;
 import com.cenfotec.manager.FileManager;
 
 
-public class SymetricManager {
+public class SymetricManager implements IManager{
 
 	private final int KEYSIZE = 8;
 	private final String KEY_EXTENSION = ".key";
 	private final String PATH = "C:/encrypt/symetric/";
 	private FileManager fileM = new FileManager();
 	
-	public void createKey(String name) throws Exception {
+	public void createKey(String name) throws Exception, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 		byte [] key = generatedSequenceOfBytes();
 		fileM.writeBytesFile(PATH, name,key,KEY_EXTENSION);
 	}
 
-	public void encryptMessage(String messageName, String message, String keyName) throws Exception {
+	public void encryptMessage(String messageName, String message, String keyName) throws IOException, IllegalBlockSizeException, BadPaddingException {
+		
 		byte[] key = readKeyFile(keyName);
-		Cipher cipher = Cipher.getInstance("AES");
+		Cipher cipher = null;
+		
+		try {
+			cipher = Cipher.getInstance("AES");
+			
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+			e.printStackTrace();
+		}
+		
 		SecretKeySpec k = new SecretKeySpec(key,"AES");
-		cipher.init(Cipher.ENCRYPT_MODE, k);
+		
+		try {
+			cipher.init(Cipher.ENCRYPT_MODE, k);
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		}
 		
 		fileM.cipher(PATH, messageName, cipher, message);
 	}
@@ -44,7 +64,7 @@ public class SymetricManager {
 		cipher.init(Cipher.DECRYPT_MODE, k);
 		byte[] DecryptedData = cipher.doFinal(encryptedMessage);
 		String message = new String(DecryptedData, StandardCharsets.UTF_8);
-		System.out.println("El mensaje era: ");
+		System.out.println("The message was: ");
 		System.out.println(message);
 	}
 	
@@ -66,7 +86,6 @@ public class SymetricManager {
 		return everything.getBytes(StandardCharsets.UTF_8);
 	}
 	
-
 	private byte[] generatedSequenceOfBytes() throws Exception {
 		StringBuilder randomkey = new StringBuilder();
 		for (int i = 0;i < KEYSIZE;i++){
