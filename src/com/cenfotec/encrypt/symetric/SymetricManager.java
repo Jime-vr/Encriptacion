@@ -21,7 +21,7 @@ import com.cenfotec.encrypt.manager.IManager;
 
 public class SymetricManager implements IManager {
 
-	private final int KEYSIZE = 64;
+	private final int KEYSIZE = 8;
 	private final String KEY_EXTENSION = ".key";
 	private final String PATH = "C:/encrypt/symetric/";
 	private FileManager fileM = new FileManager();
