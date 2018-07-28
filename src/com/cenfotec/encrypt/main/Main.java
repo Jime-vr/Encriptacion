@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
+import com.cenfotec.encrypt.manager.FManager;
+import com.cenfotec.encrypt.manager.IManager;
+
 public class Main {
 
 	private static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -23,13 +26,14 @@ public class Main {
 			out.println();
 			out.println("1. Asymetric");
 			out.println("2. Symetric");
-			out.println("3. Exit");
+			out.println("3. MD5");
+			out.println("4. Exit");
 			type = Integer.parseInt(in.readLine());
-			
+
 			IM = FManager.encryptType(type);
 			menuEncrypt();
-			
-		} while (type != 3);
+
+		} while (type != 4);
 
 	}
 
@@ -46,7 +50,7 @@ public class Main {
 			out.println();
 
 			executeAction(option);
-			
+
 		} while (option != 4);
 	}
 

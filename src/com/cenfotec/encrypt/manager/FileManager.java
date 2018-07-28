@@ -1,4 +1,4 @@
-package com.cenfotec.manager;
+package com.cenfotec.encrypt.manager;
 
 import java.io.BufferedInputStream;
 import java.io.File;

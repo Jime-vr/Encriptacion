@@ -1,4 +1,4 @@
-package com.cenfotec.encrypt.main;
+package com.cenfotec.encrypt.manager;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;

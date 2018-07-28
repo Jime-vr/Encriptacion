@@ -27,8 +27,8 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import com.cenfotec.encrypt.main.IManager;
-import com.cenfotec.manager.FileManager;
+import com.cenfotec.encrypt.manager.FileManager;
+import com.cenfotec.encrypt.manager.IManager;
 
 public class AsymetricManager implements IManager {
 

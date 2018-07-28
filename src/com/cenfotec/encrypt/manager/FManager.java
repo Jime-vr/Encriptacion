@@ -1,6 +1,7 @@
-package com.cenfotec.encrypt.main;
+package com.cenfotec.encrypt.manager;
 
 import com.cenfotec.encrypt.asymetric.AsymetricManager;
+import com.cenfotec.encrypt.md5.Md5Manager;
 import com.cenfotec.encrypt.symetric.SymetricManager;
 
 public class FManager {
@@ -15,6 +16,10 @@ public class FManager {
 		case 2:
 			
 			return new SymetricManager();
+			
+		case 3:
+			
+			return new Md5Manager();
 			
 		default:
 			
